@@ -9,7 +9,11 @@ const path = require('path');
 // Setup
 /////////////////////
 
-const pathToFrontend = path.join(__dirname, '../frontend');
+let pathToFrontend = path.join(__dirname, '../frontend');
+if (process.env.NODE_ENV === 'production') {
+  pathToFrontend = path.join(__dirname, '../frontend/dist');
+}
+
 const app = express();
 
 /////////////////////
