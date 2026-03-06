@@ -1,20 +1,20 @@
-/////////////////////
+//////////////////////////////////////////
 // Imports
-/////////////////////
+//////////////////////////////////////////
 
 const express = require('express');
 const path = require('path');
 
-/////////////////////
-// Setup
-/////////////////////
+//////////////////////////////////////////
+// Constant Variables
+//////////////////////////////////////////
 
 const pathToDistFolder = path.join(__dirname, '../frontend-complete');
 const app = express();
 
-/////////////////////
-// Controllers
-/////////////////////
+//////////////////////////////////////////
+// Middleware
+//////////////////////////////////////////
 
 const logRoutes = (req, res, next) => {
   const time = (new Date()).toLocaleString();
@@ -23,6 +23,12 @@ const logRoutes = (req, res, next) => {
 };
 
 const serveStatic = express.static(pathToDistFolder);
+app.use(logRoutes);
+app.use(serveStatic);
+
+//////////////////////////////////////////
+// Controllers
+//////////////////////////////////////////
 
 // First, we make a controller
 const serveTopArtStories = async (req, res, next) => {
@@ -43,15 +49,13 @@ const serveTopArtStories = async (req, res, next) => {
   }
 }
 
-////////////////////////
-// Routes
-////////////////////////
-
-app.use(logRoutes);
-app.use(serveStatic);
+const serve404 = (req, res, next) => {
+  res.status(404).send({ error: `Not found: ${req.originalUrl}` });
+}
 
 // GET /api/top-arts-stories
-app.get('/api/stories', serveTopArtStories)
+app.get('/api/stories', serveTopArtStories);
+app.use(serve404); // captures ALL unhandled requests
 
 const port = 8080;
 app.listen(port, () => {
