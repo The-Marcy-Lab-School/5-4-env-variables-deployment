@@ -1,6 +1,5 @@
 export const renderStories = (stories) => {
   const storiesList = document.querySelector('#stories-list');
-
   stories.forEach((story) => {
     const li = document.createElement('li');
     const a = document.createElement('a');
@@ -10,10 +9,10 @@ export const renderStories = (stories) => {
     li.append(a);
     storiesList.append(li);
   });
-}
+};
 
 export const renderError = (msg) => {
-  const errorEl = document.querySelector("#error");
+  const errorEl = document.querySelector('#error');
 
   if (!msg) {
     errorEl.classList.add('hidden');
@@ -23,4 +22,4 @@ export const renderError = (msg) => {
 
   errorEl.classList.remove('hidden');
   errorEl.textContent = msg;
-}
+};
