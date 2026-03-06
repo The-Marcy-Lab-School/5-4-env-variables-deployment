@@ -15,9 +15,9 @@ console.log(process.env.API_KEY);
 //////////////////////////////////////////
 
 const app = express();
-let pathToFrontend = path.join(__dirname, '../frontend');
+let pathToFrontend = path.join(__dirname, '../frontend-complete');
 if (process.env.NODE_ENV === 'production') {
-  pathToFrontend = path.join(__dirname, '../frontend/dist');
+  pathToFrontend = path.join(__dirname, '../frontend-complete/dist');
 }
 
 //////////////////////////////////////////
@@ -30,7 +30,7 @@ const logRoutes = (req, res, next) => {
   next();
 };
 
-const serveStatic = express.static(pathToDistFolder);
+const serveStatic = express.static(pathToFrontend);
 app.use(logRoutes);
 app.use(serveStatic);
 
