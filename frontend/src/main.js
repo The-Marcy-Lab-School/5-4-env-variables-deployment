@@ -1,5 +1,5 @@
-import { getTopStories } from "./fetch-helpers.js";
-import { renderStories, renderError } from "./dom-helpers.js";
+import { getTopStories } from './fetch-helpers.js';
+import { renderStories, renderError } from './dom-helpers.js';
 
 const main = async () => {
   const { data, error } = await getTopStories();
@@ -10,6 +10,6 @@ const main = async () => {
 
   renderError();
   renderStories(data);
-}
+};
 
 main();
