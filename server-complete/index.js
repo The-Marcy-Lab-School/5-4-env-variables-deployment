@@ -57,6 +57,10 @@ const serve404 = (req, res, next) => {
 app.get('/api/stories', serveTopArtStories);
 app.use(serve404); // captures ALL unhandled requests
 
+//////////////////////////////////////////
+// Listen
+//////////////////////////////////////////
+
 const port = 8080;
 app.listen(port, () => {
   console.log(`Server is now running on http://localhost:${port}`);
