@@ -5,12 +5,20 @@
 const express = require('express');
 const path = require('path');
 
+// 💡 dotenv loads values from the .env file into process.env
+const dotenv = require('dotenv');
+dotenv.config();
+console.log(process.env.API_KEY);
+
 //////////////////////////////////////////
 // Constant Variables
 //////////////////////////////////////////
 
-const pathToDistFolder = path.join(__dirname, '../frontend-complete');
 const app = express();
+let pathToFrontend = path.join(__dirname, '../frontend');
+if (process.env.NODE_ENV === 'production') {
+  pathToFrontend = path.join(__dirname, '../frontend/dist');
+}
 
 //////////////////////////////////////////
 // Middleware
@@ -30,9 +38,11 @@ app.use(serveStatic);
 // Controllers
 //////////////////////////////////////////
 
-// First, we make a controller
+// 💡 Use async and await to send the fetch asynchronously
 const serveTopArtStories = async (req, res, next) => {
+  // 💡 Use try/catch to execute the fetch
   try {
+    // 💡 Use process.env to retrieve the API key environment variable
     const url = `https://api.nytimes.com/svc/topstories/v2/arts.json?api-key=${process.env.API_KEY}`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -41,10 +51,10 @@ const serveTopArtStories = async (req, res, next) => {
     const data = await response.json();
     const storiesWithTitle = data.results.filter(story => story.title);
 
-    // send the fetched data to the client
+    // 💡 send the fetched data to the client
     res.send(storiesWithTitle);
   } catch (error) {
-    // or send an error. 503 means the service is unavailable
+    // 💡 or send an error. 503 means the service is unavailable
     res.status(503).send(error);
   }
 }
@@ -53,7 +63,6 @@ const serve404 = (req, res, next) => {
   res.status(404).send({ error: `Not found: ${req.originalUrl}` });
 }
 
-// GET /api/top-arts-stories
 app.get('/api/stories', serveTopArtStories);
 app.use(serve404); // captures ALL unhandled requests
 
